@@ -1,0 +1,92 @@
+<form #contactForm="ngForm">
+  <div class="container">
+    <div class="row justify-content-center">
+      <h2 class="text-center">Pie Chart</h2>
+      <div class="form-group col-md-6">
+        <label for="username">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="formData.name" name="username" #username="ngModel" required
+          maxlength="20" />
+        <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert alert-danger">
+          <div *ngIf="username.errors?.required">
+            Username is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="form-group col-md-6">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" [(ngModel)]="formData.email" name="email" #email="ngModel"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+          <div *ngIf="email.errors?.required">
+            Email is a required field!
+          </div>
+          <div *ngIf="email.errors?.pattern">
+            This is not a valid Email!!!
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <label for=""><b>INVESTMENT PURPOSE</b></label><br>
+        <ng-select2 [data]="exampleData" [placeholder]="'Demo with options'" width="300" [options]="options">
+        </ng-select2>
+        <div class="mt-4">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="">Yearly Investment</label>
+            </div>
+            <div class="col-md-6">
+              <p style="text-align: end;"> ₹ {{ principalvalue}}</p>
+            </div>
+          </div>
+          <ngx-slider [(value)]="principalvalue" [options]="principal"></ngx-slider>
+        </div>
+        <div class="mt-4">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="">Years</label>
+            </div>
+            <div class="col-md-6">
+              <p style="text-align: end;"> {{ yearstvalue}} Yr</p>
+            </div>
+          </div>
+          <ngx-slider [(value)]="yearstvalue" [options]="years"></ngx-slider>
+        </div>
+        <div class="mt-4">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="">Rate of Interest</label>
+            </div>
+            <div class="col-md-6">
+              <p style="text-align: end;"> {{ interestvalue}} %</p>
+            </div>
+          </div>
+          <ngx-slider [(value)]="interestvalue" [options]="interest"></ngx-slider>
+        </div>
+        <label for="">Total Investment</label>
+        <b>₹ {{ principalvalue}}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label for="">Total Interest</label>
+        <b> ₹ {{interestvalue}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label for="">Total</label>
+        <b> ₹ {{principalvalue * (1 + (interestvalue/100/12)) * (12 * yearstvalue)}}</b>
+      </div>
+      <div class="col-md-6">
+        <div style="display: block">
+          <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <button type="submit" (click)="onSubmit()" class="btn btn-success"
+        [disabled]="!contactForm.form.valid">Submit</button>
+    </div>
+  </div>
+</form>
